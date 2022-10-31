@@ -24,9 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         btnCorrutina.setOnClickListener {
             corrutina()
-            runOnUiThread {
-                corrutina.setText(suma.toString())
-            }
+
         }
 
         btnHilo1.setOnClickListener {
@@ -52,12 +50,18 @@ class MainActivity : AppCompatActivity() {
             for(n in numeros){
                 suma += n
                 //Esto es para que vaya mas lento
+                runOnUiThread {
+                    corrutina.setText(suma.toString())
+                }
                 delay(1000)
             }
         }
         //Parte sincrona
         //Primero se ejecuta esta parte, despues la parte asincrona
         suma = suma *2
+        runOnUiThread {
+            corrutina.setText(suma.toString())
+        }
     }
 
 //-----------------------------------------------
@@ -70,6 +74,10 @@ class MainActivity : AppCompatActivity() {
             }//
             delay(2000)
         }
+        suma3 = suma3 * 2
+        runOnUiThread {
+            corrutina2.setText(suma3.toString())
+        }//
     }
 //--------------------------------------------------
 
@@ -89,6 +97,7 @@ class Hilo(p:MainActivity) : Thread(){
         for(n in p.numeros){
             p.suma2 += n
             //Esto es para que vaya mas lento
+            p.hilo1.setText(p.suma2.toString())
             sleep(1000)
         }
         p.suma2 = p.suma2 * 2
